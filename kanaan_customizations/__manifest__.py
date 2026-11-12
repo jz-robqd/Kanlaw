@@ -1,6 +1,6 @@
 {
     "name": "Kanaan Legal – Customizations",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.0",
     "summary": "Counterparty contacts, hearing colours per lawyer, file number on documents, timesheet add-line on top",
     "author": "Roboqode",
     "license": "LGPL-3",
