@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Plain calendar (not the attendee calendar), coloured by lawyer -->
+    <record id="view_calendar_event_hearings" model="ir.ui.view">
+        <field name="name">calendar.event.calendar.kanaan.hearings</field>
+        <field name="model">calendar.event</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <calendar string="Hearings" date_start="start" date_stop="stop" date_delay="duration"
+                      all_day="allday" mode="month" event_open_popup="true" quick_create="false"
+                      color="kanaan_lawyer_id">
+                <field name="kanaan_lawyer_id" filters="1" avatar_field="avatar_128"/>
+                <field name="partner_ids" widget="many2many_tags_avatar"/>
+                <field name="location"/>
+                <field name="res_model_name" string="Linked to"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_calendar_event_search_lawyer" model="ir.ui.view">
+        <field name="name">calendar.event.search.kanaan.lawyer</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="kanaan_lawyer_id"/>
+                <filter name="kanaan_case_hearings" string="Case Hearings"
+                        domain="[('res_model', '=', 'project.task')]"/>
+                <filter name="kanaan_groupby_lawyer" string="Lawyer" context="{'group_by': 'kanaan_lawyer_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_calendar_hearings" model="ir.actions.act_window">
+        <field name="name">Hearings by Lawyer</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_calendar_event_hearings')})]"/>
+    </record>
+    <menuitem id="menu_calendar_hearings" name="Hearings by Lawyer" parent="calendar.mail_menu_calendar"
+              action="action_calendar_hearings" sequence="2" groups="base.group_user"/>
+</odoo>

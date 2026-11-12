@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- Same rows as the standard list, with the "Add a line" row moved above the records -->
+    <t t-name="kanaan_customizations.AddTopListRenderer.Rows" t-inherit="web.ListRenderer.Rows" t-inherit-mode="primary">
+        <xpath expr="//t[@t-if='!list.isGrouped']/t[@t-foreach='list.records']" position="before">
+            <xpath expr="//t[@t-if='!list.isGrouped']/tr[@t-if='displayRowCreates']" position="move"/>
+        </xpath>
+    </t>
+</templates>

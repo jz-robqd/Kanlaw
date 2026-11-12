@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Timesheets tab on the case: "Add a line" rendered above the rows -->
+    <record id="view_task_form_timesheet_add_top" model="ir.ui.view">
+        <field name="name">project.task.form.kanaan.timesheet.add.top</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='timesheet_ids']" position="attributes">
+                <attribute name="widget">one2many_add_top</attribute>
+            </xpath>
+            <xpath expr="//field[@name='timesheet_ids']/list" position="attributes">
+                <attribute name="editable">top</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

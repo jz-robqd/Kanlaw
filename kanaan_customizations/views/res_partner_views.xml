@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_counterparty" model="ir.ui.view">
+        <field name="name">res.partner.form.kanaan.counterparty</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="kanaan_is_counterparty" groups="base.group_system"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_search_counterparty" model="ir.ui.view">
+        <field name="name">res.partner.search.kanaan.counterparty</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter name="kanaan_counterparty" string="Counterparties"
+                        domain="[('kanaan_is_counterparty', '=', True)]" groups="base.group_system"/>
+                <filter name="kanaan_not_counterparty" string="Exclude Counterparties"
+                        domain="[('kanaan_is_counterparty', '=', False)]" groups="base.group_system"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Bulk tag existing counterparties from the Contacts list (Actions menu) -->
+    <record id="action_server_mark_counterparty" model="ir.actions.server">
+        <field name="name">Mark as Counterparty</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('base.group_system'))]"/>
+        <field name="state">code</field>
+        <field name="code">records.action_kanaan_mark_counterparty()</field>
+    </record>
+    <record id="action_server_unmark_counterparty" model="ir.actions.server">
+        <field name="name">Unmark Counterparty</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('base.group_system'))]"/>
+        <field name="state">code</field>
+        <field name="code">records.action_kanaan_unmark_counterparty()</field>
+    </record>
+
+    <record id="action_counterparties" model="ir.actions.act_window">
+        <field name="name">Counterparties</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('kanaan_is_counterparty', '=', True)]</field>
+        <field name="context">{'default_kanaan_is_counterparty': True}</field>
+    </record>
+    <menuitem id="menu_counterparties" name="Counterparties" parent="contacts.menu_contacts"
+              action="action_counterparties" sequence="5" groups="base.group_system"/>
+</odoo>
